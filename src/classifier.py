@@ -1,23 +1,18 @@
-__author__ = 'huseyincelik'
-
 import numpy as np
 from scipy.spatial import distance
 
+from Model import Tree, Node
 
-class Node:
-    def __init__(self, centroid, left=None, right=None, parent=None, class_of=None):
-        self.left = left
-        self.right = right
-        self.centroid = centroid
-        self.class_of = class_of
-        self.parent = parent
 
-    def classify(self, test):
-        if self.class_of is not None:
-            return self.class_of
-        left_dist = distance.euclidean(test, self.left.centroid)
-        right_dist = distance.euclidean(test, self.right.centroid)
-        return self.left.classify(test) if left_dist <= right_dist else self.right.classify(test)
+def vectorize(array):
+    return array.reshape(array.shape[0], 1)
+
+
+def fit(X, y):
+    tree = Tree()
+    data = np.append(X, vectorize(y), axis=1)
+    prepare_tree(data, tree.root)
+    return tree
 
 
 def prepare_tree(examples, node):
@@ -26,10 +21,8 @@ def prepare_tree(examples, node):
         node.class_of = classes[0]
         return
     selected_class = classes[0]
-    selecteds = with_class(examples, selected_class)
-    non_selected = without_class(examples, selected_class)
-    centroid = find_centroid(selecteds)
-    non_centroid = find_centroid(non_selected)
+    centroid = find_centroid(with_class(examples, selected_class))
+    non_centroid = find_centroid(without_class(examples, selected_class))
     classified, non_classified = learn(examples, centroid, non_centroid)
     node.left = Node(centroid, parent=node)
     node.right = Node(non_centroid, parent=node)
