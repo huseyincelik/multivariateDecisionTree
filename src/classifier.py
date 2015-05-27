@@ -42,12 +42,12 @@ def learn(examples, centroid, non_centroid):
     return examples[centroid_bools], examples[centroid_bools == False]
 
 
-def with_class(examples, selectedClass):
-    return examples[examples[:, -1] == selectedClass]
+def with_class(examples, selected_class):
+    return examples[examples[:, -1] == selected_class]
 
 
-def without_class(examples, selectedClass):
-    return examples[examples[:, -1] != selectedClass]
+def without_class(examples, selected_class):
+    return examples[examples[:, -1] != selected_class]
 
 
 def find_centroid(examples):
@@ -58,13 +58,3 @@ def classes_of(examples):
     classes = np.unique(examples[:, -1])
     np.random.shuffle(classes)
     return classes
-
-
-
-
-    # selectedClass = classes.get(0)
-    # selecteds = examples.getWithClass(selectedClass)
-    # nonSelecteds = examples.getWithoutClass(selectedClass)
-    # selectedCentroid = findCentroid(selecteds)
-    # nonSelectedCentroid = findCentroid(nonSelectedCentroid)
-    # classified,nonClassified,node = classify(examples,selectedCentroid,nonSelectedCentroid)
